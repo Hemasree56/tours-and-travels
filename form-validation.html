@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation</title>
+    <style>
+        input:focus{
+            border-color:#f26833;
+        }
+        span{
+            color:red;
+            font: 1em sans-serif;
+        }
+     input{
+                height: 30px;
+                width: 300px;
+                outline:none;
+                font-size: 16px;
+                padding-left:10px;
+                border: 1px solid #ccc;
+                margin: 20px;
+                border-color:#2c698d;
+                border-radius: 10px;
+        }
+        input[type=submit]
+        {
+            background-color: #f26833;
+            color:white;
+        }
+        input[type=checkbox]{
+            height: auto;
+                width: auto;
+                outline:none;
+                font-size: 16px;
+                padding-left:0px;
+                border: 1px solid #ccc;
+                margin: 0px;
+                border-color:#2c698d;
+                border-radius: 0px;
+        }
+        *{
+            font-family: 'Times New Roman', Times, serif;
+            font-size: large;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    .header{
+        padding: 20px;
+        background-color: #272643;
+        height: 100px;
+}
+h1{
+        color: #bae8e8;
+        font-size:xx-large;
+        text-align: center;
+        font-size: 40px;
+}
+h2{
+        color: white;
+        text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="header">
+<h1 >Web Technologies</h1>
+<h2>Assignment-6</h2>
+</div>
+
+<div class="form">
+    <center>
+    <form action="connection.php" id="form">
+        
+        <input type="text" id="name" name="fname" placeholder="Enter Your Name"><br>
+
+        <span id="namemsg"></span><br>
+
+  <input type="email" id="email" name="email" placeholder="Enter Your Email ID"><br>
+
+        <span id="emailmsg"></span><br>
+
+            <input type="tel" name="phone" id="phone" placeholder="Mobile Number"><br>
+        <span id="phonemsg"></span><br>
+
+          <input type="password" id="password" name="pwd" placeholder="Your Password"><br>
+
+        <span id="pwdmsg"></span><br>
+<input type="password" id="cpassword" name="cpwd" placeholder="Confirm Password"><br>
+
+        <span id="cpwdmsg"></span><br><br>
+
+            <input type="checkbox" id="checkbox" name="agree">
+            Agree Our Terms and Conditions
+        <br>
+        <span id="checkmsg"></span><br>
+        <br>
+        <input type="submit" value="SUBMIT">
+    </form>
+    </center>
+</div>
+
+<script>
+    let form=document.getElementById('form');
+    form.addEventListener("submit", (event) => {event.preventDefault();
+        validate();
+ });
+
+ function validate(){
+   let name = document.getElementById("name").value.trim();
+   let email= document.getElementById("email").value.trim();
+   let phone=document.getElementById("phone").value.trim();
+   let password = document.getElementById("password").value.trim();
+   let cpassword = document.getElementById("cpassword").value.trim();
+   let is_checked = document.getElementById("checkbox").checked;
+
+   let nameValid=true;
+   let passwordValid=true;
+   let emailvalid=true;
+   let phonevalid=true;
+
+   let namemsg=document.getElementById('namemsg');
+   let emailmsg=document.getElementById('emailmsg');
+   let phonemsg=document.getElementById('phonemsg');
+   let pwdmsg=document.getElementById('pwdmsg');
+   let cpwdmsg=document.getElementById('cpwdmsg');
+   let checkmsg=document.getElementById('checkmsg');
+
+//Name Validation
+
+   if(name==""){
+       namemsg.innerText="Name Cant Be Empty";
+       nameValid=false;
+   }
+   else if(name.length<3){
+       namemsg.innerText="Atleast Name Should contain 3 letters";
+       nameValid=false;
+   }
+   else if(!name.match(/[a-zA-Z]/)){
+       namemsg.innerText="Name should contain only Alphabets";
+       nameValid=false;
+   }
+   else if(name.match(/[0-9]/)){
+       namemsg.innerText="Name should not contain Numbers";
+       nameValid=false;
+   }
+   else{
+       namemsg.innerText="";
+   }
+
+
+
+   //password validation
+
+   if(password==""){
+       pwdmsg.innerText="Password cannot be empty";
+       passwordValid=false;
+   }
+   else if(password.length<8){
+       pwdmsg.innerText="Password should contain atleast 8 characters";
+       passwordValid=false;
+   }
+   else if(!password.match(/[a-z]/)){
+       pwdmsg.innerText="Atleat Contain one lower case letter";
+       passwordValid=false;
+   }
+   else if(!password.match(/[A-Z]/)){
+        pwdmsg.innerText="Atleat Contain one upper case letter";
+       passwordValid=false;
+   }
+   else if(!password.match(/[0-9]/)){
+       pwdmsg.innerText="Atleat Contain one number";
+       passwordValid=false;
+   }
+   else if(!password.match(/[$#@_/.&!%^*,]/)){
+       pwdmsg.innerText="Atleat Contain one special character";
+       passwordValid=false;
+   }
+   else{
+       pwdmsg.innerText="";
+   }
+
+ 
+
+ //confirm password validation
+
+   if(password!=cpassword){
+           
+       cpwdmsg.innerText="password not matched";
+       passwordValid=false;
+   }
+   if(cpassword==""){
+       cpwdmsg.innerText="cannot be empty";
+       passwordValid=false;
+   }
+   if(password==cpassword){
+           cpwdmsg.innerText="";
+}
+   
+    //Email Validation
+    const emailverification=/^([a-zA-Z0-9\.-]+)@([a-zA-Z0-9-]+).([a-z]{2,20}).([a-z]{2,8})$/;
+    //const emailverification = /^[^0-9][\w&.,^-_]{3,30}@[A-Za-z_*^.-]{2,20}.[A-Za-z]{2,3}?.[A-Za-z]{2,3}/;
+    
+    if(email=="")
+    {
+        emailmsg.innerText="Email Should Not be Empty";
+        emailvalid=false;
+    }
+    if(!email.match(/^([a-zA-Z0-9\.-]+)@([a-zA-Z0-9-]+).([a-z]{2,8})$/))
+    {
+        emailmsg.innerText="Enter Valid Email";
+        emailvalid=false;
+    }
+    else
+    {
+        emailmsg="";
+    }
+
+    //phone Number
+    if(phone=="")
+    {
+        phonemsg.innerText="Mobile Number Should Not be Empty";
+        phonevalid=false;
+    }
+    //else if(!phone.test(/([91]{2}|[0])?[6-9]{1}[0-9]{9}/))
+    if(!phone.match(/^([6-9]{1})[0-9]{9}/))
+    {
+        phonemsg.innerText="Enter Valid Phone Number";
+        phonevalid=false;
+    }
+    else if(phone.length!=10)
+    {
+        phonemsg.innerText="Mobile Number Should Contain 10 Digits";
+        phonevalid=false;
+    }
+    else{
+        phonemsg.innerText="";
+    }
+
+   //checkbox
+   if (!is_checked) {
+     checkmsg.innerText="Please Agree Terms and Conditions";
+     return;
+   }
+   else if(is_checked){
+       checkmsg.innerHTML="";
+   }
+
+   if (nameValid && passwordValid && is_checked && emailvalid && phonevalid) {
+     form.submit();
+   }
+
+}
+
+</script>
+</body>
+</html>
